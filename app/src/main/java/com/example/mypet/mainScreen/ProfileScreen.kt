@@ -68,7 +68,7 @@ fun ProfileScreen(navController: NavController, petProfileViewModel: PetProfileV
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Text(text = "Pet Profile", style = MaterialTheme.typography.headlineSmall)
+        Text(text = "프로필 추가하기", style = MaterialTheme.typography.headlineSmall)
 
         selectedImageUri?.let {
             Image(
