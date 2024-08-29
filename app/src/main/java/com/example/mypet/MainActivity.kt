@@ -14,6 +14,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
@@ -27,6 +28,8 @@ import com.example.mypet.PetlistScreen.DoglistScreen
 import com.example.mypet.mainScreen.EntryScreen
 import com.example.mypet.mainScreen.MainScreen
 import com.example.mypet.mainScreen.MenuScreen
+import com.example.mypet.mainScreen.PetProfileViewModel
+import com.example.mypet.mainScreen.ProfileScreen
 import com.example.mypet.mainScreen.SetScreen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -43,12 +46,11 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MyApp(darkModeViewModel: DarkModeViewModel) {
-    // 다크 모드 상태를 옵저빙하고 UI 재구성을 트리거
+
     val isDarkModeEnabled by darkModeViewModel.isDarkMode.collectAsState()
 
-    // 앱 전체를 테마로 감싼다
     MyAppTheme(darkTheme = isDarkModeEnabled) {
-        // 앱 콘텐츠를 렌더링
+
         AppContent(darkModeViewModel)
     }
 }
@@ -56,6 +58,7 @@ fun MyApp(darkModeViewModel: DarkModeViewModel) {
 @Composable
 fun AppContent(darkModeViewModel: DarkModeViewModel) {
     val navController = rememberNavController()
+    val petProfileViewModel = remember { PetProfileViewModel() }
 
     Scaffold(
         modifier = Modifier.fillMaxSize()
@@ -69,9 +72,14 @@ fun AppContent(darkModeViewModel: DarkModeViewModel) {
                 composable("entryScreen") { EntryScreen(navController) }
                 composable("doglistScreen") { DoglistScreen(navController, darkModeViewModel) }
                 composable("catlistScreen") { CatlistScreen(navController, darkModeViewModel) }
-                composable("menuScreen") { MenuScreen(navController, darkModeViewModel) }
+                composable("menuScreen") {
+                    MenuScreen(navController, petProfileViewModel, darkModeViewModel)
+                }
                 composable("setScreen") { SetScreen(navController, darkModeViewModel) }
                 composable("aichatScreen") { AichatScreen(navController, darkModeViewModel) }
+                composable("profileScreen") {
+                    ProfileScreen(navController, petProfileViewModel, darkModeViewModel)
+                }
             }
         }
     }

@@ -62,6 +62,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
+    implementation("io.coil-kt:coil-compose:2.6.0")
 
     // Test dependencies
     testImplementation(libs.junit)
