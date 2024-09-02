@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "892664004215",
+    "firebase_url": "https://chatapp1-c254b-default-rtdb.firebaseio.com",
+    "project_id": "chatapp1-c254b",
+    "storage_bucket": "chatapp1-c254b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:892664004215:android:98fd78f59e722a76041072",
+        "android_client_info": {
+          "package_name": "com.example.chatapp111"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCd-tMMneV_-ru6fVS7K8Zcg91Qwwkmoc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:892664004215:android:f4880c39427a8df8041072",
+        "android_client_info": {
+          "package_name": "com.example.mypet"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCd-tMMneV_-ru6fVS7K8Zcg91Qwwkmoc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:892664004215:android:d82eb51e42bb18a8041072",
+        "android_client_info": {
+          "package_name": "com.lastbullet.MyPet"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCd-tMMneV_-ru6fVS7K8Zcg91Qwwkmoc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

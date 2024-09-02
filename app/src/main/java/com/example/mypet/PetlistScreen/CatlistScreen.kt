@@ -12,11 +12,22 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,9 +46,18 @@ data class CatItem(
     val address: String,
     val comment: String?
 )
+
 @Composable
-fun CatlistScreen(navController: NavController, darkModeViewModel: DarkModeViewModel, catItems: List<CatItem> = emptyList()) {
+fun CatlistScreen(
+    navController: NavController,
+    darkModeViewModel: DarkModeViewModel,
+    catItems: List<CatItem> = emptyList()
+) {
     MyApp(darkModeViewModel = darkModeViewModel)
+
+    // State to manage chat messages
+    val chatMessages = remember { mutableStateListOf<String>() }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -62,26 +82,126 @@ fun CatlistScreen(navController: NavController, darkModeViewModel: DarkModeViewM
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
+                    .padding(bottom = 8.dp) // Provide some space above the chat interface
             ) {
-                val cardCount = if (catItems.isEmpty()) 6 else catItems.size
-
-                items(cardCount) { index ->
-                    if (catItems.isEmpty()) {
-                        EmptyCard()  // 빈 카드
-                    } else {
+                // Always show empty cards
+                items(6) { index ->
+                    if (index < catItems.size) {
                         CatCard(navController = navController, catItem = catItems[index])
+                    } else {
+                        CatEmptyCard()  // Always show empty cards
                     }
                 }
             }
-        }
 
-        // AI 챗봇 버튼을 우측 하단에 배치
-        AIChatbotButton(
-            navController = navController,
-            modifier = Modifier.align(Alignment.BottomEnd) // 우측 하단으로 정렬
-        )
+            // Add Chat Interface at the bottom
+            CatChatInterface(
+                navController = navController,
+                chatMessages = chatMessages,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
     }
 }
+
+@Composable
+fun CatChatInterface(
+    navController: NavController,
+    chatMessages: MutableList<String>,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .background(Color.White)
+            .padding(8.dp)
+    ) {
+        // LazyColumn for displaying chat messages
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .padding(bottom = 8.dp)
+        ) {
+            items(chatMessages) { message ->
+                Text(text = message, modifier = Modifier.padding(4.dp))
+            }
+        }
+
+        HorizontalDivider(
+            modifier = Modifier.padding(vertical = 8.dp),
+            thickness = 1.dp,
+            color = Color.Gray
+        )
+
+        // Header Text for the Chat Interface
+        Text(
+            text = "AI 챗봇 상담하기",
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.Black,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp)
+        )
+
+        // Text input field for new messages
+        var text by remember { mutableStateOf("") }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            TextField(
+                value = text,
+                onValueChange = { text = it },
+                modifier = Modifier.weight(1f),
+                placeholder = { Text("증상 입력") },
+                singleLine = true // Ensure input field stays single line
+            )
+            IconButton(
+                onClick = {
+                    if (text.isNotEmpty()) {
+                        // Add the new message to the chat list
+                        chatMessages.add(text)
+                        text = "" // Clear the text field
+                    }
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.Send,
+                    contentDescription = "Send"
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun CatEmptyCard() {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        elevation = CardDefaults.elevatedCardElevation(4.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .background(Color.White)
+                .padding(16.dp)
+        ) {
+            Text(
+                text = "Empty Card",
+                fontSize = 18.sp,
+                color = Color.Gray,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+    }
+}
+
 @Composable
 fun CatCard(
     navController: NavController? = null,
@@ -91,8 +211,9 @@ fun CatCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .background(Color.White)
-            .clickable { navController?.navigate("catDetails/${catItem?.name}") },
+            .clickable(enabled = catItem != null) {
+                navController?.navigate("catDetails/${catItem?.name}")
+            },
         elevation = CardDefaults.elevatedCardElevation(4.dp)
     ) {
         Column(
@@ -130,17 +251,5 @@ fun CatCard(
                 color = Color(0xFF6A1B9A)
             )
         }
-    }
-}
-@Composable
-fun AIChatbotButton(navController: NavController, modifier: Modifier = Modifier) {
-    FloatingActionButton(
-        onClick = {
-            navController.navigate("aiChatbot")
-        },
-        modifier = modifier.padding(16.dp),
-        containerColor = Color(0xFF6200EE)
-    ) {
-        Text(text = "AI 상담", color = Color.White)
     }
 }

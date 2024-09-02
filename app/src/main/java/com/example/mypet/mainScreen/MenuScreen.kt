@@ -154,8 +154,9 @@ fun MenuScreen(navController: NavController, petProfileViewModel: PetProfileView
             }
         }
 
-        Divider(thickness = 1.dp, color = Color.LightGray)
+        HorizontalDivider(thickness = 1.dp, color = Color.LightGray)
 
+        MenuItem(title = "로그인 하기", navController = navController)
         MenuItem(title = "펫보험", navController = navController)
         MenuItem(title = "고객센터", navController = navController)
     }
@@ -169,13 +170,17 @@ fun MenuItem(title: String, navController: NavController) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable { expanded = !expanded }
+                .clickable {
+                    expanded = !expanded
+                    if (title == "로그인 하기") {
+                        navController.navigate("LoginScreen")
+                    }
+                }
                 .padding(16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(text = title, fontSize = 16.sp, color = Color.Black)
-            // 아이콘 제거
         }
         HorizontalDivider(thickness = 1.dp, color = Color.LightGray)
     }

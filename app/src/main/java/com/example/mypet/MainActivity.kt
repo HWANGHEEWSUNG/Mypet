@@ -26,10 +26,12 @@ import com.example.mypet.PetlistScreen.AichatScreen
 import com.example.mypet.PetlistScreen.CatlistScreen
 import com.example.mypet.PetlistScreen.DoglistScreen
 import com.example.mypet.mainScreen.EntryScreen
+import com.example.mypet.mainScreen.LoginScreen
 import com.example.mypet.mainScreen.MainScreen
 import com.example.mypet.mainScreen.MenuScreen
 import com.example.mypet.mainScreen.PetProfileViewModel
 import com.example.mypet.mainScreen.ProfileScreen
+import com.example.mypet.mainScreen.RegisterScreen
 import com.example.mypet.mainScreen.SetScreen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -70,6 +72,8 @@ fun AppContent(darkModeViewModel: DarkModeViewModel) {
             ) {
                 composable("mainScreen") { MainScreen(navController, darkModeViewModel) }
                 composable("entryScreen") { EntryScreen(navController) }
+                composable("loginScreen") { LoginScreen(navController) }
+                composable("registerScreen") { RegisterScreen(navController) }
                 composable("doglistScreen") { DoglistScreen(navController, darkModeViewModel) }
                 composable("catlistScreen") { CatlistScreen(navController, darkModeViewModel) }
                 composable("menuScreen") {
